@@ -1,0 +1,64 @@
+﻿@page "/CategoriaCliente"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject ICategoriaClienteService categoriaService
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Categorias de Clientes</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-sucess btn-sm" href="/CategoriaCliente/Novo" role="button">Nova Categoria</a>
+    </div>
+</div>
+
+@if(Categorias == null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Categoria Cliente</th>
+                <th/>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var c in Categorias)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.DsCategoria</td>
+                    <td class="text-right">
+                        <a class="btn btn-primary btn-sm" href="/CategoriaCliente/Detalhe/@c.Id" role="button">Detalhe</a>
+                        <a class="btn btn-secondary btn-sm" href="/CategoriaCliente/Alterar/@c.Id" role="button">Alterar</a>
+                        <a class="btn btn-danger btn-sm" href="/CategoriaCliente/Excluir/@c.Id" role="button">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    IEnumerable<CategoriaCliente> Categorias;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categorias = await categoriaService.GetAsync();
+    }
+
+    public async Task ExcluirCategoria(int Id)
+    {
+        var categoria = await categoriaService.GetByIdAsync(Id);
+        if(categoria != null)
+    {
+            await categoriaService.DeleteAsync(categoria);
+            Categorias.ToList().Remove(categoria);
+        }
+    }
+}

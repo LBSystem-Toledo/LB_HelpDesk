@@ -1,0 +1,50 @@
+﻿@page "/CategoriaCliente/Excluir/{id:int}"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject ICategoriaClienteService categoriaService
+@inject NavigationManager navigationManager
+
+@if(Categoria != null)
+{
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>@Categoria.DsCategoria</h1>
+        </div>
+        <div class="col-lg-3 text-right">
+            <a class="btn btn-secondary btn-sm" href="/CategoriaCliente" role="button">Voltar Lista</a>
+        </div>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">Código</th>
+                <td>@Categoria.Id</td>
+            </tr>
+            <tr>
+                <th scope="row">Descrição</th>
+                <td>@Categoria.DsCategoria</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-danger btn-sm" @onclick="@ExcluirCategoria" role="button">Excluir</button>
+}
+
+@code {
+    [Parameter]
+    public int Id{ get; set; }
+
+
+    CategoriaCliente? Categoria;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Categoria = await categoriaService.GetByIdAsync(id:Id);
+    }
+
+    private async Task ExcluirCategoria()
+    {
+        await categoriaService.DeleteAsync(Categoria);
+        navigationManager.NavigateTo("/CategoriaCliente");
+    }
+}

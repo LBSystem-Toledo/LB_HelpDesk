@@ -1,0 +1,36 @@
+﻿@page "/CategoriaCliente/Novo"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject ICategoriaClienteService categoriaService
+@inject NavigationManager navigationManager
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Nova Categoria</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-secondary btn-sm" href="/CategoriaCliente" role="button">Voltar Lista</a>
+    </div>
+</div>
+
+@if(Categoria != null)
+{
+    <EditForm Model="@Categoria" OnValidSubmit="@SubmitCategoria">
+        <div class="form-group">
+            <label>Descrição Categoria</label>
+            <InputText class="form-control" @bind-Value="Categoria.DsCategoria"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </EditForm>
+}
+
+@code {
+    CategoriaCliente Categoria = new CategoriaCliente();
+
+    private async Task SubmitCategoria()
+    {
+        await categoriaService.InsertAsync(Categoria);
+        navigationManager.NavigateTo("/CategoriaCliente");
+    }
+}

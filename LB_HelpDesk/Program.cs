@@ -1,13 +1,20 @@
 using LB_HelpDesk.Data;
+using LB_HelpDesk.Data.Interface;
+using LB_HelpDesk.Data.Service;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
+builder.Services.AddDbContext<SqlDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("conHelp")));
+
+builder.Services.AddScoped<ICategoriaClienteService, CategoriaClienteService>();
 
 var app = builder.Build();
 
