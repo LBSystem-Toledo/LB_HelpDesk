@@ -9,5 +9,7 @@ namespace LB_HelpDesk.Data
             : base(options) { }
 
         public DbSet<CategoriaCliente> CategoriasCliente { get; set; }
+        public DbSet<Modulo> Modulos { get; set; }
+
     }
 }
