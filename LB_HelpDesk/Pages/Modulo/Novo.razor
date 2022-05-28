@@ -17,6 +17,8 @@
 @if(Modulo != null)
 {
     <EditForm Model="@Modulo" OnValidSubmit="@SubmitModulo">
+        <DataAnnotationsValidator/>
+        <ValidationSummary/>
         <div class="form-group">
             <label>Descrição Modulo</label>
             <InputText class="form-control" @bind-Value="Modulo.DsModulo"/>

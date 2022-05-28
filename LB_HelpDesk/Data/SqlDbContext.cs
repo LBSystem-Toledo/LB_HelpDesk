@@ -10,6 +10,7 @@ namespace LB_HelpDesk.Data
 
         public DbSet<CategoriaCliente> CategoriasCliente { get; set; }
         public DbSet<Modulo> Modulos { get; set; }
+        public DbSet<Processo> Processos { get; set; }
 
     }
 }
