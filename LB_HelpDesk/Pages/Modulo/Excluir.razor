@@ -1,0 +1,49 @@
+﻿@page "/Modulo/Excluir/{id:int}"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject IModuloService moduloService
+@inject NavigationManager navigationManager
+
+@if(Modulo != null)
+{
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>@Modulo.DsModulo</h1>
+        </div>
+        <div class="col-lg-3 text-right">
+            <a class="btn btn-secondary btn-sm" href="/Modulo" role="button">Voltar Lista</a>
+        </div>
+    </div>
+    <table class="table">
+        <tbody>
+            <tr>
+                <th scope="row">Código</th>
+                <td>@Modulo.Id</td>
+            </tr>
+            <tr>
+                <th scope="row">Descrição</th>
+                <td>@Modulo.DsModulo</td>
+            </tr>
+        </tbody>
+    </table>
+    <button class="btn btn-danger btn-sm" @onclick="@ExcluirModulo" role="button">Excluir</button>
+}
+
+@code {
+    [Parameter]
+    public int Id{ get; set; }
+
+    Modulo? Modulo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Modulo = await moduloService.GetByIdAsync(Id:Id);
+    }
+
+    private async Task ExcluirModulo()
+    {
+        await moduloService.DeleteAsync(Modulo);
+        navigationManager.NavigateTo("/Modulo");
+    }
+}

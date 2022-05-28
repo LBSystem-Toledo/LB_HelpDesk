@@ -1,28 +1,28 @@
-﻿@page "/CategoriaCliente/Detalhe/{id:int}"
+﻿@page "/Modulo/Detalhe/{id:int}"
 
 @using LB_HelpDesk.Data.DTO;
 @using LB_HelpDesk.Data.Interface
-@inject ICategoriaClienteService categoriaService
+@inject IModuloService moduloService
 
-@if(Categoria != null)
+@if(Modulo != null)
 {
     <div class="row">
         <div class="col-lg-9">
-            <h1>@Categoria.DsCategoria</h1>
+            <h1>@Modulo.DsModulo</h1>
         </div>
         <div class="col-lg-3 text-right">
-            <a class="btn btn-secondary btn-sm" href="/CategoriaCliente" role="button">Voltar Lista</a>
+            <a class="btn btn-secondary btn-sm" href="/Modulo" role="button">Voltar Lista</a>
         </div>
     </div>
     <table class="table">
         <tbody>
             <tr>
                 <th scope="row">Código</th>
-                <td>@Categoria.Id</td>
+                <td>@Modulo.Id</td>
             </tr>
             <tr>
                 <th scope="row">Descrição</th>
-                <td>@Categoria.DsCategoria</td>
+                <td>@Modulo.DsModulo</td>
             </tr>
         </tbody>
     </table>
@@ -33,10 +33,10 @@
     public int Id{ get; set; }
 
 
-    CategoriaCliente? Categoria;
+    Modulo? Modulo;
 
     protected override async Task OnInitializedAsync()
     {
-        Categoria = await categoriaService.GetByIdAsync(id:Id);
+        Modulo = await moduloService.GetByIdAsync(id:Id);
     }
 }

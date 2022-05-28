@@ -1,0 +1,36 @@
+﻿@page "/Modulo/Novo"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject IModuloService moduloService
+@inject NavigationManager navigationManager
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Novo Modulo</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-secondary btn-sm" href="/Modulo" role="button">Voltar Lista</a>
+    </div>
+</div>
+
+@if(Modulo != null)
+{
+    <EditForm Model="@Modulo" OnValidSubmit="@SubmitModulo">
+        <div class="form-group">
+            <label>Descrição Modulo</label>
+            <InputText class="form-control" @bind-Value="Modulo.DsModulo"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </EditForm>
+}
+
+@code {
+    Modulo Modulo = new Modulo();
+
+    private async Task SubmitModulo()
+    {
+        await moduloService.InsertAsync(Modulo);
+        navigationManager.NavigateTo("/Modulo");
+    }
+}

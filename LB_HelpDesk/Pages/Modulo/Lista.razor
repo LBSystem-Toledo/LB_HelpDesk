@@ -1,5 +1,64 @@
-﻿<h3>Lista</h3>
+﻿@page "/Mudulo"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject IModuloService moduloService
+
+<div class="row">
+    <div class="col-lg-9">
+        <h1>Modulos do Sistema</h1>
+    </div>
+    <div class="col-lg-3 text-right">
+        <a class="btn btn-secondary btn-sm" href="/Modulo/Novo" role="button">Novo Modulo</a>
+    </div>
+</div>
+
+@if(Modulos == null)
+{
+    <p><em>Carregando...</em></p>
+}
+else
+{
+    <table class="table table-bordered table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Código</th>
+                <th>Modulo</th>
+                <th/>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var c in Modulos)
+            {
+                <tr>
+                    <td>@c.Id</td>
+                    <td>@c.DsModulo</td>
+                    <td class="text-right">
+                        <a class="btn btn-primary btn-sm" href="/Modulo/Detalhe/@c.Id" role="button">Detalhe</a>
+                        <a class="btn btn-secondary btn-sm" href="/Modulo/Alterar/@c.Id" role="button">Alterar</a>
+                        <a class="btn btn-danger btn-sm" href="/Modulo/Excluir/@c.Id" role="button">Excluir</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 
 @code {
+    IEnumerable<Modulo> Modulos;
 
+    protected override async Task OnInitializedAsync()
+    {
+        Modulos = await moduloService.GetAsync();
+    }
+
+    public async Task ExcluirModulo(int Id)
+    {
+        var modulo = await moduloService.GetByIdAsync(Id);
+        if(modulo != null)
+    {
+            await moduloService.DeleteAsync(modulo);
+            Modulos.ToList().Remove(modulo);
+        }
+    }
 }

@@ -1,0 +1,43 @@
+﻿@page "/Modulo/Alterar/{id:int}"
+
+@using LB_HelpDesk.Data.DTO;
+@using LB_HelpDesk.Data.Interface
+@inject IModuloService moduloService
+@inject NavigationManager navigationManager
+
+@if(Modulo != null)
+{
+    <div class="row">
+        <div class="col-lg-9">
+            <h1>@Modulo.DsModulo</h1>
+        </div>
+        <div class="col-lg-3 text-right">
+            <a class="btn btn-secondary btn-sm" href="/Modulo" role="button">Voltar Lista</a>
+        </div>
+    </div>
+    <EditForm Model="@Modulo" OnValidSubmit="@SubmitModulo">
+        <div class="form-group">
+            <label>Descrição Modulo</label>
+            <InputText class="form-control" @bind-Value="Modulo.DsModulo"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Alterar</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id{ get; set; }
+
+    Modulo Modulo;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Modulo = await moduloService.GetByIdAsync(id:Id);
+    }
+
+    private async Task SubmitModulo()
+    {
+        await moduloService.UpdateAsync(Modulo);
+        navigationManager.NavigateTo("/Modulo");
+    }
+}
